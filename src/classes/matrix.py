@@ -8,7 +8,7 @@ class Matrix:
 
     Attributes
     ----------
-    values: list[list[float]]
+    values: list[list[int]]
         Values stored in the matrix.
 
     Methods
@@ -34,13 +34,13 @@ class Matrix:
 
     """
 
-    def __init__(self, values: list[list[float]]) -> None:
+    def __init__(self, values: list[list[int]]) -> None:
         """
         Construct one Matrix object with the given argument.
 
         Parameters
         ----------
-        values: list[list[float]]
+        values: list[list[int]]
             Values stored in the matrix.
 
         """
@@ -52,25 +52,25 @@ class Matrix:
         if not self.matrix_all_rows_same_length():
             raise TypeError("All rows must have the same length.")
 
-    def get_values(self) -> list[list[float]]:
+    def get_values(self) -> list[list[int]]:
         """
         Return the values stored in the matrix.
 
         Returns
         -------
-        self.values: list[list[float]]
+        self.values: list[list[int]]
             Values stored in the matrix.
 
         """
         return self.values
 
-    def set_values(self, values: list[list[float]]) -> None:
+    def set_values(self, values: list[list[int]]) -> None:
         """
         Set the values of the matrix.
 
         Parameters
         ----------
-        values: list[list[float]]
+        values: list[list[int]]
             Values stored in the matrix.
 
         """
@@ -100,7 +100,7 @@ class Matrix:
         """
         return len(self.get_values()[0])
 
-    def get_value_at(self, row: int, column: int) -> float:
+    def get_value_at(self, row: int, column: int) -> int:
         """
         Return the value at the specified position.
 
@@ -113,7 +113,7 @@ class Matrix:
 
         Returns
         -------
-        self.values[row][column]: float
+        self.values[row][column]: int
             Specified value.
 
         Raises
@@ -165,7 +165,7 @@ class Matrix:
                 return False
 
             for value in row:
-                if not isinstance(value, float):
+                if not isinstance(value, int):
                     return False
 
         return True
@@ -205,7 +205,7 @@ class Matrix:
             raise ValueError("The two given matrices can't be multiplicated.")
 
         # Initialize the product of the two given matrices
-        matrix_product: list[list[float]] = []
+        matrix_product: list[list[int]] = []
 
         for row_matrix_1 in range(matrix_1.get_number_of_rows()):
             # Add a new line to the product.
@@ -230,8 +230,8 @@ class Matrix:
             Matrix with inverted values.
 
         """
-        original_values: list[list[float]] = self.get_values()
-        values_inverted: list[list[float]] = []
+        original_values: list[list[int]] = self.get_values()
+        values_inverted: list[list[int]] = []
 
         for col in range(self.get_number_of_columns()):
             # For each column add a new row
