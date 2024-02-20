@@ -1,0 +1,7 @@
+# Ignore compiled python code
+__pycache__
+
+# Ignore the Python Virtual Environment (some typical namings)
+.venv
+venv
+env
