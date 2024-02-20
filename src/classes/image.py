@@ -6,6 +6,9 @@ from __future__ import annotations
 # Import for getting rgb values of the image pixels
 from PIL import Image as Pixel_Reader
 
+# Import for displaying image
+import matplotlib.pyplot as plt
+
 # Import Pixel class
 from classes.pixel import Pixel
 
@@ -26,6 +29,8 @@ class Image:
         Return the gray values of the pixels.
     read_image
         Read RGB values of an image an create an Image object with the values.
+    show_image
+        Display an Image object.
 
     """
 
@@ -110,3 +115,16 @@ class Image:
         image_new: Image = Image(pixel_list)
 
         return image_new
+
+    def show_image(self) -> None:
+        """Display an Image object."""
+        pixel_values: list[list[tuple[int, int, int]]] = []
+
+        for count, row in enumerate(self.get_pixels()):
+            pixel_values.append([])
+
+            for pixel in row:
+                pixel_values[count].append(pixel.get_rgb_values())
+
+        plt.imshow(pixel_values)
+        plt.show()

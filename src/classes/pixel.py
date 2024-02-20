@@ -19,6 +19,8 @@ class Pixel:
     -------
     get_gray_value
         Return the grey value of the pixel.
+    get_rgb_values
+        Return the RGB values of the image as a tuple.
 
     """
 
@@ -55,3 +57,15 @@ class Pixel:
 
         """
         return self.grey_value
+
+    def get_rgb_values(self) -> tuple[int, int, int]:
+        """
+        Return the RGB values of the image as a tuple.
+
+        Returns
+        -------
+        self.red_value, self.green_value, self.blue_value: tuple[int, int, int]
+            RGB values of the image as a tuple.
+
+        """
+        return (self.red_value, self.green_value, self.blue_value)
