@@ -9,8 +9,9 @@ from PIL import Image as Pixel_Reader
 # Import for displaying image
 import matplotlib.pyplot as plt
 
-# Import Pixel class
+# Import used classes
 from classes.pixel import Pixel
+from classes.matrix import Matrix
 
 class Image:
     """
@@ -31,7 +32,11 @@ class Image:
         Read RGB values of an image an create an Image object with the values.
     show_image
         Display an Image object.
-
+    create_pixel_matrix
+        Create a matrix including the pixel and the 8 surrounding pixels.
+    traverse_vertically
+        TBD!!!!
+s
     """
 
     def __init__(self, pixels: list[list[Pixel]]) -> None:
@@ -128,3 +133,52 @@ class Image:
 
         plt.imshow(pixel_values)
         plt.show()
+
+    @staticmethod
+    def create_pixel_matrix(values: list[list[int]], pos: tuple[int, int]) -> Matrix:
+        """
+        Create a matrix including the pixel and the 8 surrounding pixels.
+
+        Parameters
+        ----------
+        values: list[list[int]]
+            Gray values of all the pixels
+        pos: tuple[int, int]
+            Position of the pixel in the format of (row, column).
+
+        Returns
+        -------
+        pixel_matrix: Matrix
+            Matrix containing the pixel and the 8 surrounding pixel.
+
+        """
+        pixel_matrix: Matrix = Matrix([
+            [values[pos[0] - 1][pos[1] - 1], values[pos[0] - 1][pos[1]], values[pos[0] - 1][pos[1] + 1]],
+            [values[pos[0]][pos[1] - 1], values[pos[0]][pos[1]], values[pos[0]][pos[1] + 1]],
+            [values[pos[0] + 1][pos[1] - 1], values[pos[0] + 1][pos[1]], values[pos[0] + 1][pos[1] + 1]]])
+
+        return pixel_matrix
+
+    def traverse_vertically(self, diffential_filter: Matrix) -> list[list[Pixel]]:
+        gray_values: list[list[int]] = self.get_gray_values()
+        pixels_differentiated: list[list[Pixel]] = []
+
+        # Ignore the first and last pixel in each row and column
+        for row_count, row in enumerate(gray_values[1:-1]):
+            print(row_count)
+            pixels_differentiated.append([])
+
+            for col_count, pixel in enumerate(row[1:-1]):
+                # Increment row/column by 1 count as the first row/column was skipped
+                pixel_matrix: Matrix = Image.create_pixel_matrix(
+                    gray_values, (row_count + 1, col_count + 1))
+
+                # Calculate the differentiated pixel value at the current position
+                pixel_value_tmp: int = Matrix.matrix_multiplication(
+                    diffential_filter, pixel_matrix).get_value_at(1, 1)
+
+                # Append the value as a pixel
+                pixels_differentiated[row_count].append(Pixel(
+                    pixel_value_tmp, pixel_value_tmp, pixel_value_tmp))
+
+        return pixels_differentiated

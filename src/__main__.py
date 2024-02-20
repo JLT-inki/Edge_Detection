@@ -15,10 +15,14 @@ DIFFERENTIAL_FILTERS: dict[str, Matrix] = {
 }
 
 # Path to the image
-PATH_TO_IMAGE: str = "../images/Auto.jpg"
+PATH_TO_IMAGE: str = "../images/Bild1.jpg"
 
 def main() -> int:
     image_normal: Image = Image.read_image(PATH_TO_IMAGE)
+    #image_normal.show_image()
+    a = Image(image_normal.traverse_vertically(DIFFERENTIAL_FILTERS['soebel']))
+    a.show_image()
+
         
     # Return Exitcode 0 indicating success
     return 0
