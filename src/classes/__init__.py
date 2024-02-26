@@ -1,1 +1,1 @@
-"""Python package holding the used classes (Image, Matrix, Pixel)"""
+"""Python package holding the used classes (Image, Matrix, Pixel)."""

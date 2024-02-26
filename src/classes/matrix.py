@@ -223,7 +223,7 @@ class Matrix:
     def invert(self) -> Matrix:
         """
         Invert the matrix and return the values as a new matrix.
-        
+
         Returns
         -------
         matrix_inverted: Matrix

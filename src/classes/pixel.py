@@ -28,8 +28,8 @@ class Pixel:
         """
         Initialize one Pixel object with the given attributes.
 
-        Paramneters
-        -----------
+        Parameters
+        ----------
         red_value: int
             Value of the primary colour red.
         green_value: int
