@@ -1,0 +1,46 @@
+output-format: grouped  # for other formats see https://prospector.landscape.io/en/latest/usage.html#all-options
+
+strictness: veryhigh
+test-warnings: false
+doc-warnings: true
+member-warnings: true
+inherits:               # see https://github.com/PyCQA/prospector/tree/master/prospector/profiles/profiles
+  - full_pep8           # enables most warnings in pycodestyle
+autodetect: false
+max-line-length: 88
+
+bandit:
+  run: true
+
+dodgy:
+  run: true
+
+mccabe:
+  run: true
+  options:
+    max-complexity: 10
+
+pycodestyle:
+  run: true
+  disable:
+    - E302            # expected 2 blank lines, found 0 (https://www.flake8rules.com/rules/E302.html)
+
+pydocstyle:
+  run: true
+  disable:
+    - D212            # conflicts with D213 (https://stackoverflow.com/questions/45990301/pep257-d212-and-d213-conflicts)
+    - D203            # conflicts with D211 (https://github.com/PyCQA/pydocstyle/issues/141)
+
+pyflakes:
+  run: false          # pylint does the same more strictly
+
+pylint:
+  run: true           # using default options (see https://github.com/pylint-dev/pylint/blob/main/pylintrc)
+  disable:
+    - E1101           # no-member (https://pylint.readthedocs.io/en/latest/user_guide/messages/error/no-member.html#no-member-e1101)
+
+mypy:
+  run: true
+
+vulture:
+  run: true
