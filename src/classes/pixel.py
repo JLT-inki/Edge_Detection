@@ -6,13 +6,13 @@ class Pixel:
 
     Attributes
     ----------
-    red_value: int
+    red_value: float
         Value of the primary colour red.
-    green_value: int
+    green_value: float
         Value of the primary colour green.
-    blue_value: int
+    blue_value: float
         Value of the primary colour blue.
-    grey_value: int
+    grey_value: float
         Grey value of the pixel.
 
     Methods
@@ -24,47 +24,47 @@ class Pixel:
 
     """
 
-    def __init__(self, red_value: int, green_value: int, blue_value: int) -> None:
+    def __init__(self, red_value: float, green_value: float, blue_value: float) -> None:
         """
         Initialize one Pixel object with the given attributes.
 
         Parameters
         ----------
-        red_value: int
+        red_value: float
             Value of the primary colour red.
-        green_value: int
+        green_value: float
             Value of the primary colour green.
-        blue_value: int
+        blue_value: float
             Value of the primary colour blue.
 
         """
-        self.red_value: int = red_value
-        self.green_value: int = green_value
-        self.blue_value: int = blue_value
+        self.red_value: float = red_value
+        self.green_value: float = green_value
+        self.blue_value: float = blue_value
 
         # Determine the grey value of the pixel
-        self.grey_value: int = int(sum([
-            self.green_value, self.blue_value, self.green_value]) / 3)
+        self.grey_value: float = sum([
+            self.red_value, self.green_value, self.blue_value]) / 3
 
-    def get_gray_value(self) -> int:
+    def get_gray_value(self) -> float:
         """
         Return the grey value of the pixel.
 
         Returns
         -------
-        self.grey_value: int
+        self.grey_value: float
             Grey value of the pixel.
 
         """
         return self.grey_value
 
-    def get_rgb_values(self) -> tuple[int, int, int]:
+    def get_rgb_values(self) -> tuple[float, float, float]:
         """
         Return the RGB values of the image as a tuple.
 
         Returns
         -------
-        self.red_value, self.green_value, self.blue_value: tuple[int, int, int]
+        self.red_value, self.green_value, self.blue_value: tuple[float, float, float]
             RGB values of the image as a tuple.
 
         """
