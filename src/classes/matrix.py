@@ -8,7 +8,7 @@ class Matrix:
 
     Attributes
     ----------
-    values: list[list[int]]
+    values: list[list[float]]
         Values stored in the matrix.
 
     Methods
@@ -29,18 +29,24 @@ class Matrix:
         Check if given values represent a matrix.
     matrix_multiplication
         Multiplicate two given matrices.
-    invert
-        Invert the matrix and return the values as a new matrix.
+    transpose
+        Transpose the matrix and return the values as a new matrix.
+    get_sum
+        Add all values of a matrix together and return it.
+    apply_filter
+        Apply a filter to each value of a matrix.
+    two_matrices_same_dimensions
+        Check whether two matrices have the same dimensions.
 
     """
 
-    def __init__(self, values: list[list[int]]) -> None:
+    def __init__(self, values: list[list[float]]) -> None:
         """
         Construct one Matrix object with the given argument.
 
         Parameters
         ----------
-        values: list[list[int]]
+        values: list[list[float]]
             Values stored in the matrix.
 
         """
@@ -52,25 +58,25 @@ class Matrix:
         if not self.matrix_all_rows_same_length():
             raise TypeError("All rows must have the same length.")
 
-    def get_values(self) -> list[list[int]]:
+    def get_values(self) -> list[list[float]]:
         """
         Return the values stored in the matrix.
 
         Returns
         -------
-        self.values: list[list[int]]
+        self.values: list[list[float]]
             Values stored in the matrix.
 
         """
         return self.values
 
-    def set_values(self, values: list[list[int]]) -> None:
+    def set_values(self, values: list[list[float]]) -> None:
         """
         Set the values of the matrix.
 
         Parameters
         ----------
-        values: list[list[int]]
+        values: list[list[float]]
             Values stored in the matrix.
 
         """
@@ -100,7 +106,7 @@ class Matrix:
         """
         return len(self.get_values()[0])
 
-    def get_value_at(self, row: int, column: int) -> int:
+    def get_value_at(self, row: int, column: int) -> float:
         """
         Return the value at the specified position.
 
@@ -113,7 +119,7 @@ class Matrix:
 
         Returns
         -------
-        self.values[row][column]: int
+        self.values[row][column]: float
             Specified value.
 
         Raises
@@ -165,33 +171,19 @@ class Matrix:
                 return False
 
             for value in row:
-                if not isinstance(value, int):
+                if not isinstance(value, (int, float)):
                     return False
 
         return True
 
-    @staticmethod
-    def matrix_multiplication(matrix_1: Matrix, matrix_2: Matrix) -> Matrix:
+    def transpose(self) -> Matrix:
         """
-        Multiplicate two given matrices.
-
-        Parameters
-        ----------
-        matrix_1: Matrix
-            First matrix of the equation.
-        matrix_2: Matrix
-            Second matrix of the equation.
+        Transpose the matrix and return the values as a new matrix.
 
         Returns
         -------
-        matrix_product: Matrix
-            Product of the two given matrices.
-
-        Raises
-        ------
-        ValueError
-            If the number of columns of the first matrix is not equal to the number of
-            rows of the second matrix.
+        matrix_inverted: Matrix
+            Matrix with inverted values.
 
         Notes
         -----
@@ -200,38 +192,8 @@ class Matrix:
         Python Enhancement Proposals [PEP 563]).
 
         """
-        # Check if the two given matrices can be multiplicated
-        if matrix_1.get_number_of_columns() != matrix_2.get_number_of_rows():
-            raise ValueError("The two given matrices can't be multiplicated.")
-
-        # Initialize the product of the two given matrices
-        matrix_product: list[list[int]] = []
-
-        for row_matrix_1 in range(matrix_1.get_number_of_rows()):
-            # Add a new line to the product.
-            matrix_product.append([])
-
-            for column_matrix_2 in range(matrix_2.get_number_of_columns()):
-                # Multiply row of matrix 1 with column of matrix 2
-                matrix_product[row_matrix_1].append(sum([
-                    matrix_1.get_value_at(row_matrix_1, col_1_row_2)
-                    * matrix_2.get_value_at(col_1_row_2, column_matrix_2)
-                    for col_1_row_2 in range(matrix_1.get_number_of_columns())]))
-
-        return Matrix(matrix_product)
-
-    def invert(self) -> Matrix:
-        """
-        Invert the matrix and return the values as a new matrix.
-
-        Returns
-        -------
-        matrix_inverted: Matrix
-            Matrix with inverted values.
-
-        """
-        original_values: list[list[int]] = self.get_values()
-        values_inverted: list[list[int]] = []
+        original_values: list[list[float]] = self.get_values()
+        values_inverted: list[list[float]] = []
 
         for col in range(self.get_number_of_columns()):
             # For each column add a new row
@@ -244,3 +206,90 @@ class Matrix:
         matrix_inverted: Matrix = Matrix(values_inverted)
 
         return matrix_inverted
+
+    def get_sum(self) -> float:
+        """
+        Add all values of a matrix together and return it.
+
+        Returns
+        -------
+        sum_matrix: float
+            Sum of all values in the matrix.
+
+        """
+        # Initialize the return value
+        sum_matrix: float = 0
+
+        for row in self.get_values():
+            for value in row:
+                sum_matrix += value
+
+        return sum_matrix
+
+    def apply_filter(self, matrix_filter: Matrix) -> Matrix:
+        """
+        Apply a filter to each value of a matrix.
+
+        Each value of the matrix is multiplicated with the respective value
+        in the filter.
+
+        Parameters
+        ----------
+        matrix_filter: Matrix
+            To be applied filter with the same dimensions of the matrix.
+
+        Returns
+        -------
+        new_values: Matrix
+            Matrix values with the filter applied as an object of the Matrix class.
+
+        Notes
+        -----
+        Import in line 4 is necessary for type hints of this function as the type
+        'Matrix' is used as a forward reference here (see index 563 of the
+        Python Enhancement Proposals [PEP 563]).
+
+        """
+        # Get the values of the two matrices
+        values_matrix = self.get_values()
+        values_filter = matrix_filter.get_values()
+
+        # Initialize the return value
+        new_values: list[list[float]] = []
+
+        for row in range(len(values_matrix)):
+            new_values.append([])
+
+            for col in range(len(values_matrix[0])):
+                new_values[row].append(
+                    values_matrix[row][col] * values_filter[row][col])
+
+        return Matrix(new_values)
+
+    @staticmethod
+    def two_matrices_same_dimensions(matrix_1: Matrix, matrix_2: Matrix) -> bool:
+        """
+        Check whether two matrices have the same dimensions.
+
+        Parameters
+        ----------
+        matrix_1: Matrix
+            First matrix of the check.
+        matrix_2: Matrix
+            Second matrix of the check.
+
+        Returns
+        -------
+        bool
+            Returns True when the two matrices have the same dimensions,
+            otherwise returns False.
+
+        Notes
+        -----
+        Import in line 4 is necessary for type hints of this function as the type
+        'Matrix' is used as a forward reference here (see index 563 of the
+        Python Enhancement Proposals [PEP 563]).
+
+        """
+        return (matrix_1.get_number_of_rows() == matrix_2.get_number_of_rows() and
+                matrix_1.get_number_of_columns() == matrix_2.get_number_of_columns())
