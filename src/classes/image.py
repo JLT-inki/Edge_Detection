@@ -32,8 +32,6 @@ class Image:
         Read RGB values of an image an create an Image object with the values.
     show_image
         Display an Image object.
-    create_pixel_matrix
-        Create a matrix including the pixel and the 8 surrounding pixels.
     traverse
         Traverse the image vertically and differentiate all pixels.
 
@@ -134,35 +132,6 @@ class Image:
         plt.imshow(pixel_values)
         plt.show()
 
-    @staticmethod
-    def create_pixel_matrix(values: list[list[float]], pos: tuple[int, int],
-                            size: tuple[int, int]) -> Matrix:
-        """
-        Create a matrix including the pixel and the 8 surrounding pixels.
-
-        Parameters
-        ----------
-        values: list[list[float]]
-            Gray values of all the pixels
-        pos: tuple[int, int]
-            Position of the pixel in the format of (row, column).
-
-        Returns
-        -------
-        pixel_matrix: Matrix
-            Matrix containing the pixel and the 8 surrounding pixel.
-
-        """
-        # Get the indices for the height and width
-        height: int = int(size[0] / 2)
-        width: int = int(size[1] / 2)
-
-        pixel_matrix: Matrix = Matrix([
-            [values[row][col] for col in range(pos[1] - width, pos[1] + width + 1)]
-            for row in range(pos[0] - height, pos[0] + height + 1)])
-
-        return pixel_matrix
-
     def traverse(self, differential_filter: Matrix) -> list[list[Pixel]]:
         """
         Traverse the image vertically and differentiate all pixels.
@@ -180,6 +149,9 @@ class Image:
         """
         # Get the grayscale values of the image
         gray_values: list[list[float]] = self.get_gray_values()
+
+        # Create a Matrix object with the grayscale values to create sub matrices of it
+        gray_values_as_matrix: Matrix = Matrix(gray_values)
 
         # Initialize the return value
         pixels_differentiated: list[list[Pixel]] = []
@@ -199,16 +171,16 @@ class Image:
             pixels_differentiated.append([])
 
             for col_count in range(len(row[border[1]:-border[1]])):
-                # Get the sub matrix for both directions
-                pixel_matrix_x: Matrix = Image.create_pixel_matrix(
-                    gray_values, (row_count, col_count), (rows_filter, cols_filter))
-                pixel_matrix_y: Matrix = Image.create_pixel_matrix(
-                    gray_values, (row_count, col_count), (cols_filter, rows_filter))
+                # Get sub matrices for both directions
+                sub_matrix_x: Matrix = gray_values_as_matrix.create_sub_matrix(
+                    (row_count, col_count), (rows_filter, cols_filter))
+                sub_matrix_y: Matrix = gray_values_as_matrix.create_sub_matrix(
+                    (row_count, col_count), (cols_filter, rows_filter))
 
                 # Calculate the differentiated pixel value at the current position
-                gradient_x: float = pixel_matrix_x.apply_filter(
+                gradient_x: float = sub_matrix_x.apply_filter(
                     differential_filter).get_sum()
-                gradient_y: float = pixel_matrix_y.apply_filter(
+                gradient_y: float = sub_matrix_y.apply_filter(
                     differential_filter.transpose()).get_sum()
                 gradient_absolute: int = int(
                     (abs(gradient_x) ** 2 + abs(gradient_y) ** 2) ** 0.5)

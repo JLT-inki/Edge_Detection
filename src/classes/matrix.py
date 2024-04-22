@@ -37,6 +37,8 @@ class Matrix:
         Apply a filter to each value of a matrix.
     two_matrices_same_dimensions
         Check whether two matrices have the same dimensions.
+    create_sub_matrix
+        Create a matrix including the pixel and the 8 surrounding pixels.
 
     """
 
@@ -293,3 +295,33 @@ class Matrix:
         """
         return (matrix_1.get_number_of_rows() == matrix_2.get_number_of_rows() and
                 matrix_1.get_number_of_columns() == matrix_2.get_number_of_columns())
+
+    def create_sub_matrix(self, pos: tuple[int, int], size: tuple[int, int]) -> Matrix:
+        """
+        Create a matrix including the pixel and the 8 surrounding pixels.
+
+        Parameters
+        ----------
+        pos: tuple[int, int]
+            Position of the pixel in the format of (row, column).
+        size: tuple[int, int]
+            Size that the sub matrix shall have. (Number of rows, Number of columns)
+
+        Returns
+        -------
+        sub_matrix: Matrix
+            Matrix containing the pixel and the 8 surrounding pixel.
+
+        """
+        # Get the values of the matrix
+        values: list[list[float]] = self.get_values()
+
+        # Get the indices for the height and width
+        height: int = int(size[0] / 2)
+        width: int = int(size[1] / 2)
+
+        sub_matrix: Matrix = Matrix([
+            [values[row][col] for col in range(pos[1] - width, pos[1] + width + 1)]
+            for row in range(pos[0] - height, pos[0] + height + 1)])
+
+        return sub_matrix
