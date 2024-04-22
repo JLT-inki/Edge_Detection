@@ -39,6 +39,8 @@ class Matrix:
         Check whether two matrices have the same dimensions.
     create_sub_matrix
         Create a matrix including the pixel and the 8 surrounding pixels.
+    to_string
+        Format the values of a matrix into a string.
 
     """
 
@@ -325,3 +327,22 @@ class Matrix:
             for row in range(pos[0] - height, pos[0] + height + 1)])
 
         return sub_matrix
+
+    def to_string(self) -> str:
+        """
+        Format the values of a matrix into a string.
+
+        Returns
+        -------
+        matrix_as_string: str
+            Formatted matrix as a string.
+
+        """
+        # Initialize the return value
+        matrix_as_string = []
+
+        for row in self.get_values():
+            formatted_row = "[" + " ".join(f"{x:>{6}.2f}" for x in row) + "]"
+            matrix_as_string.append(formatted_row)
+
+        return "\n".join(matrix_as_string)
