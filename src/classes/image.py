@@ -30,8 +30,8 @@ class Image:
         Return the gray values of the pixels.
     read_image
         Read RGB values of an image an create an Image object with the values.
-    show_image
-        Display an Image object.
+    add_image_to_plot
+        Add the image to the plot to later display them.
     traverse
         Traverse the image vertically and differentiate all pixels.
 
@@ -61,7 +61,7 @@ class Image:
         """
         return self.pixels
 
-    def get_gray_values(self) -> list[list[float]]:
+    def get_gray_values(self) -> list[list[int]]:
         """
         Return the gray values of the pixels.
 
@@ -71,7 +71,7 @@ class Image:
             Gray values of the pixels.
 
         """
-        gray_values: list[list[float]] = []
+        gray_values: list[list[int]] = []
 
         for count, row in enumerate(self.get_pixels()):
             gray_values.append([])
@@ -119,18 +119,35 @@ class Image:
 
         return image_new
 
-    def show_image(self) -> None:
-        """Display an Image object."""
+    def add_image_to_plot(self, title: str, grayscale: bool = False) -> None:
+        """
+        Add the image to the plot to later display them.
+        
+        Parameters
+        ----------
+        title: str
+            Title of the image to identify it on the display.
+        grayscale:
+            Boolean indicating whether the image shall be shown in grayscale. The
+            default value is False, indicating that the image shall be shown in RGB.
+
+        """
         pixel_values: list[list[tuple[float, float, float]]] = []
 
         for count, row in enumerate(self.get_pixels()):
             pixel_values.append([])
 
             for pixel in row:
-                pixel_values[count].append(pixel.get_rgb_values())
+                if grayscale:
+                    pixel_values[count].append(
+                        (pixel.get_gray_value(), pixel.get_gray_value(),
+                         pixel.get_gray_value()))
+                else:
+                    pixel_values[count].append(pixel.get_rgb_values())
 
         plt.imshow(pixel_values)
-        plt.show()
+        plt.axis('off')
+        plt.title(title)
 
     def traverse(self, differential_filter: Matrix) -> list[list[Pixel]]:
         """
@@ -148,7 +165,7 @@ class Image:
 
         """
         # Get the grayscale values of the image
-        gray_values: list[list[float]] = self.get_gray_values()
+        gray_values: list[list[int]] = self.get_gray_values()
 
         # Create a Matrix object with the grayscale values to create sub matrices of it
         gray_values_as_matrix: Matrix = Matrix(gray_values)
@@ -167,7 +184,6 @@ class Image:
 
         # Ignore the border of the image
         for row_count, row in enumerate(gray_values[border[0]:-border[0]]):
-            print(row_count)
             pixels_differentiated.append([])
 
             for col_count in range(len(row[border[1]:-border[1]])):
