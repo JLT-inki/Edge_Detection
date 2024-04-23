@@ -39,6 +39,7 @@ pylint:
   disable:
     - E1101           # no-member (https://pylint.readthedocs.io/en/latest/user_guide/messages/error/no-member.html#no-member-e1101)
     - C0200           # Project included iterating with range and len that's the most logical
+    - R0902           # Project included class that breaks that limit in a sensible way
 
 mypy:
   run: true
