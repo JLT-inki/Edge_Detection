@@ -2,9 +2,12 @@
 
 import sys
 
+# Import for initializing the window of the user interface
+from tkinter import Tk
+
 # Import used classes
-from classes.image import Image
 from classes.matrix import Matrix
+from classes.user_interface import UserInterface
 
 # Dictionary for the different filters
 DIFFERENTIAL_FILTERS: dict[str, Matrix] = {
@@ -23,22 +26,14 @@ DIFFERENTIAL_FILTERS: dict[str, Matrix] = {
                         [-1.0, -4.0, -9.0, -13.0, -9.0, -4.0, -1.0]])
 }
 
-# Path to the images
-PATH_TO_IMAGES: dict[int, str] = {
-    1: "../images/Car.jpg",
-    2: "../images/Church.jpg",
-    3: "../images/Circle.jpg",
-    4: "../images/Sydney.jpg"
-}
-
 def main() -> int:
     """Execute the project."""
-    # Read the original image
-    image_normal: Image = Image.read_image(PATH_TO_IMAGES[1])
+    # Initialize the window
+    window = Tk()
 
-    # Traverse the image and show it
-    image_traversed = Image(image_normal.traverse(DIFFERENTIAL_FILTERS['soebel']))
-    image_traversed.show_image()
+    # Initialize the user interface and show it
+    user_interface = UserInterface(window, "Differential Filters", 550, 600)
+    user_interface.show_window(DIFFERENTIAL_FILTERS, "./../images/")
 
     # Return Exitcode 0 indicating success
     return 0
