@@ -43,8 +43,9 @@ class Pixel:
         self.blue_value: float = blue_value
 
         # Determine the grey value of the pixel
-        self.grey_value: int = int(sum([
-            self.red_value * 0.2989 , self.green_value * 0.5870 , self.blue_value * 0.1140 ]))
+        self.grey_value: int = int(
+            sum([self.red_value * 0.2989, self.green_value * 0.5870,
+                 self.blue_value * 0.1140]))
 
     def get_gray_value(self) -> int:
         """
