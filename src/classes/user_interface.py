@@ -73,7 +73,7 @@ class UserInterface:
         self.width: int = width
 
         # Apply the height and width to the window
-        self.window.geometry(str(height) + "x" + str(width))
+        self.window.geometry(str(width) + "x" + str(height))
 
         # Apply the title to the window
         self.window.title(self.name)
