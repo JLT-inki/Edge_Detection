@@ -12,7 +12,7 @@ class Pixel:
         Value of the primary colour green.
     blue_value: float
         Value of the primary colour blue.
-    grey_value: float
+    grey_value: int
         Grey value of the pixel.
 
     Methods
@@ -43,10 +43,10 @@ class Pixel:
         self.blue_value: float = blue_value
 
         # Determine the grey value of the pixel
-        self.grey_value: float = sum([
-            self.red_value, self.green_value, self.blue_value]) / 3
+        self.grey_value: int = int(sum([
+            self.red_value * 0.2989 , self.green_value * 0.5870 , self.blue_value * 0.1140 ]))
 
-    def get_gray_value(self) -> float:
+    def get_gray_value(self) -> int:
         """
         Return the grey value of the pixel.
 
